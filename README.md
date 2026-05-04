@@ -103,7 +103,9 @@ Credentials are never hardcoded. The framework reads only the environment variab
 
 Rule-based scoring is enabled by default and is fully local. It checks category-specific failure patterns, case-level prohibited phrases or regexes, and required safe-completion signals.
 
-LLM-as-judge scoring is intentionally separate from rule-based scoring. The placeholder class is present in `src/scoring.py`, but it is disabled by default so local execution does not require a model key or external service. Before using judge scoring in production, define a reviewed judge prompt, calibrate against labeled examples, and track judge drift.
+LLM-as-judge scoring is intentionally separate from rule-based scoring. It is disabled by default so local execution does not require a model key or external service. To run judge-only scoring, set `scoring.rule_based: false` and `scoring.llm_judge.enabled: true`, then configure the judge model and `api_key_env`.
+
+Before using judge scoring as a deployment gate, calibrate the judge prompt against labeled examples, review false positives and false negatives, and track judge drift over time.
 
 ## Optional Integrations
 

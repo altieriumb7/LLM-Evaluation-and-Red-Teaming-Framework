@@ -120,9 +120,11 @@ with right:
     )
 
 st.subheader("Failed Prompts")
-if failures.empty:
+if failures.empty and not show_passed:
     st.success("No failing examples were detected by the active rule-based scorer.")
 else:
+    if failures.empty:
+        st.success("No failing examples were detected by the active rule-based scorer. Showing passed examples.")
     for item in report["results"]:
         if item["passed"] and not show_passed:
             continue
@@ -184,4 +186,3 @@ download_cols[1].download_button(
 
 with st.expander("Raw Result Data"):
     st.dataframe(results, hide_index=True, use_container_width=True)
-

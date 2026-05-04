@@ -17,7 +17,7 @@ def run_evaluation(config: AppConfig, base_dir: str | Path | None = None) -> dic
     provider = build_provider(config.provider)
 
     if not config.scoring.rule_based and config.scoring.llm_judge.enabled:
-        scorer = LLMJudgeScorer()
+        scorer = LLMJudgeScorer(config.scoring.llm_judge)
     else:
         scorer = RuleBasedScorer()
 
@@ -51,4 +51,3 @@ def run_evaluation_from_config(config_path: str | Path) -> dict[str, Any]:
     config = load_config(path)
     root = path.parent.parent if path.parent.name == "evals" else Path.cwd()
     return run_evaluation(config, base_dir=root)
-
