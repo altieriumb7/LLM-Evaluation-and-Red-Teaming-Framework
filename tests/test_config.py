@@ -3,7 +3,7 @@ from dataclasses import replace
 
 import pytest
 
-from src.config import load_config, validate_config
+from src.config import infer_config_base_dir, load_config, validate_config
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,3 +25,8 @@ def test_config_validation_rejects_bad_provider() -> None:
         validate_config(bad_config, base_dir=ROOT)
 
     validate_config(config, base_dir=ROOT)
+
+
+def test_infer_config_base_dir_resolves_repo_root_for_evals_config() -> None:
+    base_dir = infer_config_base_dir(ROOT / "evals" / "config.yaml", ["prompts/adversarial_prompts.yaml"])
+    assert base_dir == ROOT

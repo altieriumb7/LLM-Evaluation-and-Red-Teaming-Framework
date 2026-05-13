@@ -77,6 +77,27 @@ def _ensure_list(value: Any, section: str) -> list[Any]:
     raise ValueError(f"Config field '{section}' must be a list.")
 
 
+def _prompt_path_exists(base_dir: Path, prompt_path: str) -> bool:
+    path = Path(prompt_path)
+    if path.is_absolute():
+        return path.exists()
+    return (base_dir / path).exists()
+
+
+def infer_config_base_dir(config_path: str | Path, prompt_files: list[str]) -> Path:
+    path = Path(config_path)
+    candidates: list[Path] = []
+    for candidate in [path.parent, path.parent.parent, Path.cwd()]:
+        resolved = candidate.resolve()
+        if resolved not in candidates:
+            candidates.append(resolved)
+
+    for candidate in candidates:
+        if all(_prompt_path_exists(candidate, prompt_file) for prompt_file in prompt_files):
+            return candidate
+    return path.parent.resolve()
+
+
 def load_config(path: str | Path) -> AppConfig:
     config_path = Path(path)
     if not config_path.exists():
@@ -142,7 +163,7 @@ def load_config(path: str | Path) -> AppConfig:
         reporting=reporting_config,
         optional_integrations=integrations_config,
     )
-    validate_config(config, base_dir=config_path.parent.parent if config_path.parent.name == "evals" else Path.cwd())
+    validate_config(config, base_dir=infer_config_base_dir(config_path, run_config.prompt_files))
     return config
 
 

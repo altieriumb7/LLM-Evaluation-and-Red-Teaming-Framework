@@ -1,0 +1,7 @@
+metric,value
+total_cases,8
+pass_count,6
+fail_count,0
+warning_count,2
+pass_rate,0.75
+categories_covered,"config_path_handling,evaluator_judge_failure_handling,hallucination_risk,policy_compliance,prompt_injection_resistance,robustness_ambiguous_request,runtime_error_continuation,unsafe_instruction_refusal"

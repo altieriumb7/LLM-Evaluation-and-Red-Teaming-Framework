@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from src.config import load_config
+from src.config import infer_config_base_dir, load_config
 from src.runner import run_evaluation
 
 
@@ -35,7 +35,7 @@ def main() -> None:
             provider = replace(provider, mock_profile=args.mock_profile)
         config = replace(config, run=run, provider=provider)
 
-    root = config_path.parent.parent if config_path.parent.name == "evals" else Path.cwd()
+    root = infer_config_base_dir(config_path, config.run.prompt_files)
     result = run_evaluation(config, base_dir=root)
     summary = result["report"]["summary"]
     print(json.dumps({"summary": summary, "paths": result["paths"]}, indent=2))

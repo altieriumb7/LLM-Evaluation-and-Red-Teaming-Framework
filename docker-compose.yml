@@ -1,0 +1,20 @@
+services:
+  redteam-dashboard:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      DEMO_MODE: ${DEMO_MODE:-true}
+      ALLOW_LIVE_RUNS: ${ALLOW_LIVE_RUNS:-false}
+      DEFAULT_CONFIG_PATH: ${DEFAULT_CONFIG_PATH:-evals/config.yaml}
+      REPORTS_DIR: ${REPORTS_DIR:-reports}
+      BENCHMARK_MODE: ${BENCHMARK_MODE:-demo}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    volumes:
+      - ./reports:/app/reports
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
