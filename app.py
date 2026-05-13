@@ -276,6 +276,12 @@ if settings.demo_mode:
         "Clone the repo and set OPENAI_API_KEY to run full evaluations."
     )
 
+st.warning(
+    "Live testing setup: to run real OpenAI-compatible evaluations, set DEMO_MODE=false, "
+    "ALLOW_LIVE_RUNS=true, and provide OPENAI_API_KEY as a private Hugging Face Secret or as a "
+    "temporary session key. Never put API keys in the public repository."
+)
+
 tab_eval, tab_benchmark = st.tabs(["Evaluation Dashboard", "Benchmark & Qualitative Evaluation"])
 
 with tab_eval:
