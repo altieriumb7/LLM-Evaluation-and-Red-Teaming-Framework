@@ -1,5 +1,5 @@
 ---
-title: LLM Red Team Evaluation Dashboard
+title: LLM Evaluation and Red-Teaming Framework
 emoji: 🧪
 colorFrom: red
 colorTo: gray
